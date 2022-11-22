@@ -17,6 +17,8 @@ export const getOne = async (nombre) => {
       "SELECT * FROM categorias WHERE nombre = ?",
       [nombre]
     );
+    if (!category.length > 0)
+      return { status: 404, category: null, message: "Category not found" };
     return { status: 200, category: category[0], message: "Ok" };
   } catch (error) {
     return { status: 500, category: null, message: error.message };
@@ -40,7 +42,7 @@ export const create = async (nombre) => {
     return {
       status: 201,
       categoryCreated,
-      message: "Category created succesfully",
+      message: `Category created succesfully with id= ${categoryCreated.insertId}`,
     };
   } catch (error) {
     return { status: 500, category: null, message: error.message };

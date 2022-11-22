@@ -1,7 +1,7 @@
 import { pool } from "../db.js";
 import { encryptPassword, matchPassword } from "../lib/helpers.js";
 import jwt from "jsonwebtoken";
-import { unCodedUser } from "../middlewares/authJwt.js";
+// import { unCodedUser } from "../middlewares/authJwt.js";
 
 export const validateUser = async (username, email = null) => {
   try {
@@ -25,9 +25,8 @@ export const validateUser = async (username, email = null) => {
   }
 };
 
-export const login = async (credentials) => {
+export const login = async ({ username, password }) => {
   try {
-    const { username, password } = credentials;
     const [response] = await pool.query(
       "SELECT * FROM usuarios WHERE usuario = ?",
       [username]
@@ -53,8 +52,8 @@ export const login = async (credentials) => {
       expiresIn: 86400,
     });
 
-    const [user] = await unCodedUser(token);
-
+    const user = response[0];
+    user.contraseña = "";
     return { status: 200, user: user, token, message: "Ok" };
   } catch (error) {
     return { status: 500, user: null, token: null, message: error.message };
@@ -70,46 +69,38 @@ export const register = async (user) => {
       fechaNacimiento,
       phone,
       password,
-      roles,
+      role = "USER",
     } = user;
-
-    if (!roles) roles = ["USER"];
 
     const { valid, message } = await validateUser(username, email);
     if (!valid) return { status: 400, token: null, message };
 
     const encryptPass = await encryptPassword(password);
 
-    const validRolesIds = [];
-    roles.forEach(async (role) => {
-      const [res] = await pool.query("SELECT * FROM roles WHERE nombre = ?", [
-        role,
-      ]);
-      if (res.length > 0) validRolesIds.push(res[0].id);
-      console.log(validRolesIds);
-    });
-    // if (validRolesIds.length === 0)
-    //   return { status: 403, token: null, message: "Invalid roles" };
+    const [res] = await pool.query("SELECT id FROM roles WHERE nombre = ? ", [
+      role,
+    ]);
+    const roleId = res[0].id;
 
     const [response] = await pool.query(
       `INSERT INTO usuarios 
-      (nombre, apellido, usuario, email, fechaNacimiento, telefono, contraseña) 
-      VALUES (?,?,?,?,?,?,?)`,
-      [name, lastname, username, email, fechaNacimiento, phone, encryptPass]
+      (nombre, apellido, usuario, email, fechaNacimiento, telefono, contraseña, roles_id) 
+      VALUES (?,?,?,?,?,?,?, ?)`,
+      [
+        name,
+        lastname,
+        username,
+        email,
+        fechaNacimiento,
+        phone,
+        encryptPass,
+        roleId,
+      ]
     );
     const id = response.insertId;
 
-    validRolesIds.forEach(async (validRole) => {
-      await pool.query(
-        `INSERT INTO usuarios_has_roles 
-      (usuarios_idusuarios, role_idrole) 
-      VALUES (?, ?)`,
-        [id, validRole]
-      );
-    });
-
     const token = jwt.sign({ id }, process.env.SECRET, {
-      expiresIn: 86400,
+      expiresIn: "2h",
     });
     return {
       status: 201,
@@ -119,5 +110,24 @@ export const register = async (user) => {
   } catch (error) {
     console.log(error);
     return { status: 500, token: null, message: error.message };
+  }
+};
+
+export const validateAdmin = async (token) => {
+  let isAdmin = false;
+  try {
+    const decoded = jwt.verify(token, process.env.SECRET);
+    const id = decoded.id;
+    const [user] = await pool.query("SELECT * FROM usuarios WHERE id= ?", [id]);
+    if (!user.length > 0) return { status: 404, isAdmin };
+    const roleId = user[0].roles_id;
+    const [role] = await pool.query("SELECT nombre FROM roles WHERE id=?", [
+      roleId,
+    ]);
+    if (role[0].nombre === "ADMIN") isAdmin = true;
+
+    return { status: 200, isAdmin };
+  } catch (error) {
+    return { status: 500, isAdmin };
   }
 };

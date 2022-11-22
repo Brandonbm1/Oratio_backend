@@ -3,8 +3,7 @@ import * as userServices from "../services/userServices.js";
 
 export const login = async (req, res) => {
   const { user, token, message, status } = await authServices.login(req.body);
-  console.log(req.body);
-  res.status(status).json({ user, token, message });
+  res.status(status).json({ user, message, token });
 };
 
 export const register = async (req, res) => {
@@ -37,4 +36,11 @@ export const changePassword = async (req, res) => {
   if (!user) return res.status(status).json({ message });
   const userChanged = await userServices.changePassword(user.id, password);
   return res.status(userChanged.status).json({ message: userChanged.message });
+};
+
+export const validateAdmin = async (req, res) => {
+  const token = req.headers["authorization"];
+  if (!token) return res.status(400).json({ message: "No token provided" });
+  const { status, isAdmin } = await authServices.validateAdmin(token);
+  return res.status(status).send(isAdmin);
 };
