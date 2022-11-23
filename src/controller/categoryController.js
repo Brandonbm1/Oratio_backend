@@ -1,15 +1,15 @@
 import * as categoryService from "../services/categoryServices.js";
 
 export const getAll = async (_req, res) => {
-  const { status, categories, message } = await categoryService.getAll();
-  if (!categories) return res.status(status).json(message);
+  const { status, categories } = await categoryService.getAll();
+
   return res.status(status).json(categories);
 };
 
 export const getOne = async (req, res) => {
   const { name } = req.params;
-  const { status, category, message } = await categoryService.getOne(name);
-  if (!category) return res.status(status).json(message);
+  const { status, category } = await categoryService.getOne(name);
+
   return res.status(status).json(category);
 };
 
