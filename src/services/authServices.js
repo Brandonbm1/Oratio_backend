@@ -1,6 +1,7 @@
 import { pool } from "../db.js";
 import { encryptPassword, matchPassword } from "../lib/helpers.js";
 import jwt from "jsonwebtoken";
+import { SECRET } from "../config.js";
 // import { unCodedUser } from "../middlewares/authJwt.js";
 
 export const validateUser = async (username, email = null) => {
@@ -48,7 +49,7 @@ export const login = async ({ username, password }) => {
         message: "Wrong credentials",
       };
 
-    const token = jwt.sign({ id: response[0].id }, process.env.SECRET, {
+    const token = jwt.sign({ id: response[0].id }, SECRET, {
       expiresIn: 86400,
     });
 
@@ -99,7 +100,7 @@ export const register = async (user) => {
     );
     const id = response.insertId;
 
-    const token = jwt.sign({ id }, process.env.SECRET, {
+    const token = jwt.sign({ id }, SECRET, {
       expiresIn: "2h",
     });
     return {
@@ -116,7 +117,7 @@ export const register = async (user) => {
 export const validateAdmin = async (token) => {
   let isAdmin = false;
   try {
-    const decoded = jwt.verify(token, process.env.SECRET);
+    const decoded = jwt.verify(token, SECRET);
     const id = decoded.id;
     const [user] = await pool.query("SELECT * FROM usuarios WHERE id= ?", [id]);
     if (!user.length > 0) return { status: 404, isAdmin };

@@ -1,13 +1,13 @@
 import jwt from "jsonwebtoken";
 import { pool } from "../db.js";
-
+import { SECRET } from "../config.js";
 export const verifyToken = async (req, res, next) => {
   try {
     const token = req.headers["authorization"];
 
     if (!token) return res.status(400).json({ message: "No token provider" });
 
-    const decoded = jwt.verify(token, process.env.SECRET);
+    const decoded = jwt.verify(token, SECRET);
 
     req.userId = decoded.id;
 

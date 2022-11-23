@@ -1,9 +1,10 @@
 import { createPool } from "mysql2/promise";
+import { HOST, PORTDB, USER, PASSWORD, DATABASE } from "./config.js";
 
 export const pool = createPool({
-  host: "localhost",
-  port: 3306,
-  user: "root",
-  password: "1234",
-  database: "oratio",
+  host: HOST,
+  port: PORTDB,
+  user: USER,
+  password: PASSWORD,
+  database: DATABASE,
 });

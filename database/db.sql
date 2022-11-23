@@ -8,19 +8,19 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 -- Schema mydb
 -- -----------------------------------------------------
 -- -----------------------------------------------------
--- Schema oratio
+-- Schema railway
 -- -----------------------------------------------------
 
 -- -----------------------------------------------------
--- Schema oratio
+-- Schema railway
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `oratio` DEFAULT CHARACTER SET utf8mb3 ;
-USE `oratio` ;
+CREATE SCHEMA IF NOT EXISTS `railway` DEFAULT CHARACTER SET utf8mb3 ;
+USE `railway` ;
 
 -- -----------------------------------------------------
--- Table `oratio`.`categorias`
+-- Table `railway`.`categorias`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `oratio`.`categorias` (
+CREATE TABLE IF NOT EXISTS `railway`.`categorias` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`),
@@ -33,9 +33,9 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `oratio`.`roles`
+-- Table `railway`.`roles`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `oratio`.`roles` (
+CREATE TABLE IF NOT EXISTS `railway`.`roles` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   PRIMARY KEY (`id`))
@@ -45,9 +45,9 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `oratio`.`usuarios`
+-- Table `railway`.`usuarios`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `oratio`.`usuarios` (
+CREATE TABLE IF NOT EXISTS `railway`.`usuarios` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `apellido` VARCHAR(45) NOT NULL,
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `oratio`.`usuarios` (
   INDEX `fk_usuarios_roles1_idx` (`roles_id` ASC) VISIBLE,
   CONSTRAINT `fk_usuarios_roles1`
     FOREIGN KEY (`roles_id`)
-    REFERENCES `oratio`.`roles` (`id`)
+    REFERENCES `railway`.`roles` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
@@ -70,9 +70,9 @@ DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `oratio`.`cursos`
+-- Table `railway`.`cursos`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `oratio`.`cursos` (
+CREATE TABLE IF NOT EXISTS `railway`.`cursos` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `descripcion` VARCHAR(45) NULL DEFAULT NULL,
@@ -81,15 +81,15 @@ CREATE TABLE IF NOT EXISTS `oratio`.`cursos` (
   INDEX `fk_cursos_usuarios1_idx` (`idDocente` ASC) VISIBLE,
   CONSTRAINT `fk_cursos_usuarios1`
     FOREIGN KEY (`idDocente`)
-    REFERENCES `oratio`.`usuarios` (`id`))
+    REFERENCES `railway`.`usuarios` (`id`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `oratio`.`palabras`
+-- Table `railway`.`palabras`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `oratio`.`palabras` (
+CREATE TABLE IF NOT EXISTS `railway`.`palabras` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `nombre` VARCHAR(45) NOT NULL,
   `idCategoria` INT NOT NULL,
@@ -100,19 +100,19 @@ CREATE TABLE IF NOT EXISTS `oratio`.`palabras` (
   INDEX `fk_palabras_usuarios1_idx` (`idUsuarioSolicitado` ASC) VISIBLE,
   CONSTRAINT `fk_palabras_categorias1`
     FOREIGN KEY (`idCategoria`)
-    REFERENCES `oratio`.`categorias` (`id`),
+    REFERENCES `railway`.`categorias` (`id`),
   CONSTRAINT `fk_palabras_usuarios1`
     FOREIGN KEY (`idUsuarioSolicitado`)
-    REFERENCES `oratio`.`usuarios` (`id`))
+    REFERENCES `railway`.`usuarios` (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
--- Table `oratio`.`gif`
+-- Table `railway`.`gif`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `oratio`.`gif` (
+CREATE TABLE IF NOT EXISTS `railway`.`gif` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `descripcion` VARCHAR(45) NULL DEFAULT NULL,
   `direccionGif` VARCHAR(45) NOT NULL,
@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `oratio`.`gif` (
   INDEX `fk_gif_palabras1_idx` (`idPalabra` ASC) VISIBLE,
   CONSTRAINT `fk_gif_palabras1`
     FOREIGN KEY (`idPalabra`)
-    REFERENCES `oratio`.`palabras` (`id`))
+    REFERENCES `railway`.`palabras` (`id`))
 ENGINE = InnoDB
 AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8mb3;
