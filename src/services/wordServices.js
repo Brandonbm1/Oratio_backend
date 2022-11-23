@@ -31,7 +31,7 @@ export const getOne = async (searchWord) => {
   }
 };
 
-export const create = async (name, nameCategory, idUser) => {
+export const create = async (name, nameCategory, idUser = null) => {
   try {
     const { word } = await getOne(name);
     if (word.length > 0)

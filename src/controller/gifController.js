@@ -3,7 +3,7 @@ import * as gifServices from "../services/gifServices.js";
 export const getAll = async (_req, res) => {
   const { status, gifs } = await gifServices.getAll();
 
-  return res.status(status).json({ gifs });
+  return res.status(status).json(gifs);
 };
 
 export const getByWord = async (req, res) => {

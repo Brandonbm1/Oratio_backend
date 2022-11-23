@@ -21,7 +21,7 @@ export const create = async (req, res) => {
     idUser
   );
 
-  res.status(status).json({ message });
+  res.status(status).json(message);
 };
 // export const editVideo = async (req, res) => {
 //   const { word } = req.params;
@@ -33,5 +33,5 @@ export const create = async (req, res) => {
 export const deleteWord = async (req, res) => {
   const { name } = req.params;
   const { status, message } = await wordServices.deleteWord(name);
-  res.status(status).json({ message });
+  res.status(status).json(message);
 };
