@@ -72,7 +72,6 @@ export const register = async (user) => {
       password,
       role = "USER",
     } = user;
-    console.log(user);
     const { valid, message } = await validateUser(username, email);
     if (!valid) return { status: 400, token: null, message };
 
