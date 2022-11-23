@@ -5,7 +5,7 @@ export const getAll = async () => {
   try {
     const [gifResponse] = await pool.query("SELECT * FROM gif");
     if (gifResponse.length == 0)
-      return { status: 404, gifs: null, message: "Theres no content" };
+      return { status: 204, gifs: null, message: "Theres no content" };
     return { status: 200, gifs: gifResponse, message: null };
   } catch (error) {
     return { status: 500, gifs: null, message: error.message };
@@ -20,7 +20,7 @@ export const getByWord = async (wordForSearch) => {
       [word.id]
     );
     if (gifResponse.length == 0)
-      return { status: 404, message: "Word not found" };
+      return { status: 204, message: "Word not found" };
     return { status: 200, gif: gifResponse };
   } catch (error) {
     return { status: 500, gif: null, message: error.message };
