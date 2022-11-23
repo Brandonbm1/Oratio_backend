@@ -1,5 +1,5 @@
 import { pool } from "../db.js";
-import { getOne as getCategory } from "./categoryServices.js";
+import { getByName as getCategory } from "./categoryServices.js";
 export const getAll = async () => {
   try {
     const [words] = await pool.query("SELECT * FROM palabras");
@@ -37,12 +37,11 @@ export const create = async (name, nameCategory, idUser = null) => {
     const { word } = await getOne(name);
 
     if (word) {
-      console.log("La palabra ya está creada -> ", word[0]);
       return { status: 302, message: "Word is alredy created" };
     }
+
     const { category } = await getCategory(nameCategory);
     if (!category) {
-      console.log("No está la categoria");
       return { status: 401, message: "Wrong category" };
     }
     await pool.query(
