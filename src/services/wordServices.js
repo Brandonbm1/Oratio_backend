@@ -37,7 +37,7 @@ export const create = async (name, nameCategory, idUser = null) => {
     const { word } = await getOne(name);
 
     if (word) {
-      console.log("La palabra ya está creada -> ", word);
+      console.log("La palabra ya está creada -> ", word[0]);
       return { status: 302, message: "Word is alredy created" };
     }
     const { category } = await getCategory(nameCategory);
