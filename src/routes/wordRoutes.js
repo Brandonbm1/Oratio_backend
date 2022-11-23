@@ -9,7 +9,7 @@ app.get("/words", wordController.getAll);
 
 app.get("/words/:name", wordController.getOne);
 
-app.post("/words", [verifyToken, isAdmin], wordController.create);
+app.post("/words", wordController.create);
 
 app.delete("/words/:name", [verifyToken, isAdmin], wordController.deleteWord);
 
