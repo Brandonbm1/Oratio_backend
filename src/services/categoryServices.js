@@ -3,7 +3,7 @@ import { pool } from "../db.js";
 export const getAll = async () => {
   try {
     const [categories] = await pool.query(
-      "SELECT nombre FROM categorias ORDER BY id ASC"
+      "SELECT * FROM categorias ORDER BY id ASC"
     );
     return { status: 200, categories, message: "Ok" };
   } catch (error) {
