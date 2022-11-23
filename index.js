@@ -23,7 +23,7 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 app.use("/auth", cors(corsOptions), authRoutes);
-app.use("/api", cors(corsOptions), wordRoutes);
+app.use("/api", wordRoutes);
 app.use("/api", cors(corsOptions), userRoutes);
 
 app.listen(PORT);
