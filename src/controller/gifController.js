@@ -1,16 +1,14 @@
 import * as gifServices from "../services/gifServices.js";
 
 export const getAll = async (_req, res) => {
-  const { status, gifs, message } = await gifServices.getAll();
+  const { status, gifs } = await gifServices.getAll();
 
-  if (!gifs) return res.status(status).json({ message });
   return res.status(status).json({ gifs });
 };
 
 export const getByWord = async (req, res) => {
   const { word } = req.params;
-  const { status, gif, message } = await gifServices.getByWord(word);
-  if (!gif) return res.status(status).json({ message });
+  const { status, gif } = await gifServices.getByWord(word);
   return res.status(status).json(gif);
 };
 
