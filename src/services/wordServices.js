@@ -34,9 +34,9 @@ export const getOne = async (searchWord) => {
 export const create = async (name, nameCategory, idUser = null) => {
   try {
     const { word } = await getOne(name);
-    if (!word) return { status: 400, message: "Word is alredy created" };
+    if (word) return { status: 302, message: "Word is alredy created" };
     const { category } = await getCategory(nameCategory);
-    if (!category) return { status: 400, message: "Wrong category" };
+    if (!category) return { status: 401, message: "Wrong category" };
     await pool.query(
       `INSERT INTO palabras (nombre, idCategoria, idUsuarioSolicitado)
      VALUES (?,?,?)`,
