@@ -27,7 +27,7 @@ export const edit = async (req, res) => {
 };
 
 export const deleteCategory = async (req, res) => {
-  const { name } = req.params;
-  const { status, message } = await categoryService.deleteCategory(name);
+  const { id } = req.params;
+  const { status, message } = await categoryService.deleteCategory(id);
   return res.status(status).json({ message });
 };

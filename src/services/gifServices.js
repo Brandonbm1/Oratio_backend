@@ -3,9 +3,9 @@ import * as wordServices from "./wordServices.js";
 
 export const getAll = async () => {
   try {
-    const [gifResponse] = await pool.query("SELECT * FROM gif");
+    const [gifs] = await pool.query("SELECT * FROM gif");
 
-    return { status: 200, gifs: gifResponse, message: null };
+    return { status: 200, gifs: gifs, message: null };
   } catch (error) {
     return { status: 500, gifs: null, message: error.message };
   }

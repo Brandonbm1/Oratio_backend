@@ -10,8 +10,7 @@ export const getAll = async () => {
     return { status: 500, categories: null, message: error.message };
   }
 };
-
-export const getOne = async (nombre) => {
+export const getByName = async (nombre) => {
   try {
     const [category] = await pool.query(
       "SELECT * FROM categorias WHERE nombre = ?",
@@ -22,10 +21,21 @@ export const getOne = async (nombre) => {
     return { status: 500, category: null, message: error.message };
   }
 };
+export const getOne = async (id) => {
+  try {
+    const [category] = await pool.query(
+      "SELECT * FROM categorias WHERE id = ?",
+      [id]
+    );
+    return { status: 200, category: category[0], message: "Ok" };
+  } catch (error) {
+    return { status: 500, category: null, message: error.message };
+  }
+};
 
 export const create = async (nombre) => {
   try {
-    const category = await getOne(nombre);
+    const category = await getByName(nombre);
     if (!category)
       return {
         status: 400,

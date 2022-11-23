@@ -17,14 +17,14 @@ app.delete("/words/:name", [verifyToken, isAdmin], wordController.deleteWord);
 
 app.get("/categories", categoryController.getAll);
 
-app.get("/categories/:name", categoryController.getOne);
+app.get("/categories/:id", categoryController.getOne);
 
 app.post("/categories", [verifyToken, isAdmin], categoryController.create);
 
-app.put("/categories/:name", [verifyToken, isAdmin], categoryController.edit);
+app.put("/categories/:id", [verifyToken, isAdmin], categoryController.edit);
 
 app.delete(
-  "/categories/:name",
+  "/categories/:id",
   [verifyToken, isAdmin],
   categoryController.deleteCategory
 );
