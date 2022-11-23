@@ -26,12 +26,12 @@ export const getByWord = async (wordForSearch) => {
 
 export const create = async (gif) => {
   try {
+    console.log(gif);
     const { description, address, idWord } = gif;
     const [gifResponse] = await pool.query(
       "INSERT INTO gif (descripcion, direccionGif, idPalabra ) VALUES (?,?,?)",
       [description, address, idWord]
     );
-    console.log(gifResponse);
     return { status: 200, message: "OK" };
   } catch (error) {
     return { status: 500, message: error.message };

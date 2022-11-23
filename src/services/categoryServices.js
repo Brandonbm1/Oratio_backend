@@ -21,6 +21,7 @@ export const getByName = async (nombre) => {
     return { status: 500, category: null, message: error.message };
   }
 };
+
 export const getOne = async (id) => {
   try {
     const [category] = await pool.query(
